@@ -1,0 +1,62 @@
+<script language="JavaScript">
+    var xmlhttp;
+
+    function init() {
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4) { // Vérifiez que la requête est terminée
+                if (xmlhttp.status === 200) {
+                    var resultat = JSON.parse(xmlhttp.responseText);
+                    var reference = document.getElementById("reference");
+                    var adresse = document.getElementById("adresse");
+                    var gouvernorat = document.getElementById("gouvernorat");
+
+                    reference.value = "";
+                    adresse.value = "";
+                    gouvernorat.value = "";
+
+                    for (var i in resultat) {
+                        reference.value = reference.value + " " + resultat[i].reference;
+                        adresse.value = adresse.value + " " + resultat[i].adresse;
+                        gouvernorat.value = gouvernorat.value + " " + resultat[i].gouvernorat;
+                    }
+                } else {
+                    alert("Error->" + xmlhttp.responseText);
+                }
+            }
+        };
+    }
+
+    // Assurez-vous d'appeler init() pour initialiser l'objet XMLHttpRequest avant d'effectuer une requête.
+
+    function getdetails(){
+        var delegation=document.getElementById("delegation");
+        var url="http://localhost:8050/LogementRendezVous_Etudiant_war_exploded/rest/logements/deleguation/"+delegation.value;
+        xmlhttp.open('GET',url,true);
+        xmlhttp.send(null);
+    }
+</script>
+
+<body onload="init()">
+   <h1>Tester Service Logement (client REST)</h1>
+   <table>
+ <tr>
+       <td>Saisir Delegation :  </td>
+       <td><input type="text" id="delegation" size="10">
+	   <input type="button" value="OK" onclick="getdetails()"></td>
+   </tr>
+   <tr>
+       <td> Reference :  </td>
+       <td><input type="text" readonly="true" id="reference"></td>
+   </tr>
+   <tr>
+       <td> Adresse : </td>
+       <td><textarea id="adresse"></textarea></td>
+   </tr>
+   <tr>
+       <td> Gouvernorat : </td>
+       <td><input type="text" readonly="true" id="gouvernorat"></td>
+   </tr>
+  </table>
+  
+</body>
