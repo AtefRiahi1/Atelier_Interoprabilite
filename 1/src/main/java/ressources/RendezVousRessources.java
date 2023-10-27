@@ -26,8 +26,7 @@ public class RendezVousRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("list/{refLogement}")
-    public Response getRendezVous(@PathParam("refLogement") String refLogement) {
+    public Response getRendezVous(@QueryParam("refLogement") String refLogement) {
         List<RendezVous> liste=new ArrayList<RendezVous>();
         if(refLogement != null) {
             liste = rendezVousMetier.getListeRendezVousByLogementReference(Integer.parseInt(refLogement));
